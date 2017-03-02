@@ -293,8 +293,6 @@ class Image_Cache
 
 	/**
 	 * On failure, saves our default mime image for use
-	 *
-	 * @return array
 	 */
 	private function _setTemporaryImage()
 	{

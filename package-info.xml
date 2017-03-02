@@ -14,12 +14,12 @@
 		<require-dir name="subs" destination="SOURCEDIR">Helpers</require-dir>
 		<require-dir name="themes" destination="BOARDDIR">Templates, CSS, Language</require-dir>
 
-		<hook hook="integrate_bbc_codes" file="SUBSDIR/imagecache.integrate.php" function="Image_Cache_Integrate::imagecache_integrate_bbc_codes" />
+		<hook hook="integrate_bbc_codes" file="SUBSDIR/ImageCache.integrate.php" function="Image_Cache_Integrate::imagecache_integrate_bbc_codes" />
 		<hook hook="integrate_routine_maintenance" file="ADMINDIR/ManageImageCacheModule.controller.php" function="ManageImageCacheModule_Controller::imagecache_integrate_routine_maintenance" />
-		<hook hook="integrate_list_scheduled_tasks" file="SUBSDIR/imagecache.integrate.php" function="Image_Cache_Integrate::imagecache_integrate_list_scheduled_tasks" />
+		<hook hook="integrate_list_scheduled_tasks" file="SUBSDIR/ImageCache.integrate.php" function="Image_Cache_Integrate::imagecache_integrate_list_scheduled_tasks" />
 		<hook hook="integrate_autotask_include" function="SUBSDIR/RemoveOldImageCache.php" />
-		<hook hook="integrate_admin_areas" file="SUBSDIR/imagecache.integrate.php" function="Image_Cache_Integrate::imagecache_integrate_admin_areas" />
-		<hook hook="integrate_admin_search" file="SUBSDIR/imagecache.integrate.php" function="Image_Cache_Integrate::imagecache_integrate_admin_search" />
+		<hook hook="integrate_admin_areas" file="SUBSDIR/ImageCache.integrate.php" function="Image_Cache_Integrate::imagecache_integrate_admin_areas" />
+		<hook hook="integrate_admin_search" file="SUBSDIR/ImageCache.integrate.php" function="Image_Cache_Integrate::imagecache_integrate_admin_search" />
 
 		<database type="file">install.php</database>
 		<redirect url="index.php?action=admin;area=manageimagecache" timeout="5000">redirect.txt</redirect>
