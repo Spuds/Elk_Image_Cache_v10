@@ -90,7 +90,7 @@ class Image_Cache
 		{
 			// If its to large, flag it as "done" so we don't try to fetch the file
 			// otherwise we seed with past time to ensure its retried immediately
-			if ($this->sniffSize() > $this->_modSettings['image_cache_maxsize'])
+			if (!empty($this->_modSettings['image_cache_maxsize']) && $this->sniffSize() > $this->_modSettings['image_cache_maxsize'])
 			{
 				$input = array($this->hash, time(), 0);
 			}
@@ -127,7 +127,7 @@ class Image_Cache
 			$head = array_change_key_case($head);
 
 			// Read from Content-Length: if it exists
-			$size = isset($head['content-length']) ? $head['content-length'] : 0;
+			$size = isset($head['content-length']) && is_numeric ($head['content-length']) ? $head['content-length'] : 0;
 			$size = round($size / 1048576, 2);
 		}
 
