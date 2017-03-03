@@ -118,12 +118,18 @@ class Image_Cache
 	 */
 	public function sniffSize()
 	{
+		$size = 0;
 		stream_context_set_default(array('http' => array('method' => 'HEAD')));
-		$head = array_change_key_case(get_headers($this->data, 1));
+		$head = @get_headers($this->data, 1);
 
-		// Read from Content-Length: if it exists
-		$size = isset($head['content-length']) ? $head['content-length'] : 0;
-		$size = round($size / 1048576, 2);
+		if ($head !== false)
+		{
+			$head = array_change_key_case($head);
+
+			// Read from Content-Length: if it exists
+			$size = isset($head['content-length']) ? $head['content-length'] : 0;
+			$size = round($size / 1048576, 2);
+		}
 
 		// Size in MB or 0 if we don't know
 		return $size;
