@@ -210,13 +210,14 @@ class Elk_Proxy
 			return false;
 		}
 
-		if (!file_exists($this->_fileName))
+		if (!$this->_isValidReferrer())
 		{
 			return false;
 		}
 
-		if (!$this->_isValidReferrer())
+		if (!file_exists($this->_fileName))
 		{
+			$this->_resetCacheEntry();
 			return false;
 		}
 
@@ -256,6 +257,22 @@ class Elk_Proxy
 		}
 
 		return $is_allowed;
+	}
+
+	/**
+	 * Called to remove a db entry from the cache
+	 *
+	 * - If we receive a valid hash but can't find the file, this will
+	 * clear the entry (should it exists) from the db as well
+	 * - We seed all new requests with the default image, so it *should*
+	 * always be found, but if not, we clear the db entry
+	 */
+	private function _resetCacheEntry()
+	{
+		// Use the image cache to do the necessary work
+		require_once(SUBSDIR . '/ImageCache.class.php');
+		$cache = new Image_Cache(database(), $this->_image);
+		$cache->removeImageFromCacheTable();
 	}
 
 	/**

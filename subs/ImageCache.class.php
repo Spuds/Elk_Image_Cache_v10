@@ -136,6 +136,20 @@ class Image_Cache
 	}
 
 	/**
+	 * Removes and image entry from the cache table
+	 */
+	public function removeImageFromCacheTable()
+	{
+		$this->_db->query('', '
+			DELETE FROM {db_prefix}image_cache
+			WHERE filename = {string:filename}',
+			array(
+				'filename' => $this->hash,
+			)
+		);
+	}
+
+	/**
 	 * Checks if the image has previously been saved.
 	 *
 	 * - true if we have successfully (previously) saved the image
