@@ -46,6 +46,18 @@ class Image_Cache_Integrate
 			$parseBoard = parse_url($boardurl);
 			$parseImg = parse_url($data);
 
+			// If its seriously malformed, give up now
+			if ($parseImg === false)
+			{
+				return false;
+			}
+
+			// No need to cache an image that is already from this site
+			if (strpos($parseBoard['host'], $parseImg['host']) === 0)
+			{
+				return false;
+			}
+
 			// No need to cache an image that is not going over https, or is already https over https
 			if (!$always && ($parseBoard['scheme'] === 'http' || $parseBoard['scheme'] === $parseImg['scheme']))
 			{
