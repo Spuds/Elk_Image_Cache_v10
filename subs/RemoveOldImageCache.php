@@ -1,6 +1,7 @@
 <?php
+
 /**
- * Schedule task interface to remove images in the cache that have not been accessed
+ * Scheduled task to remove images in the cache that have not been accessed
  * in a given period of time
  *
  * @name ImageCache
@@ -47,7 +48,7 @@ class Remove_Old_Image_Cache
 		$pruneDate = time() - ($modSettings['image_cache_keep_days'] * 86400);
 
 		// All files that are older than pruneDate
-		$files = $db->fetchQuery('
+		$request = $db->query('', '
 			SELECT 
 				filename
 			FROM  {db_prefix}image_cache
@@ -56,19 +57,20 @@ class Remove_Old_Image_Cache
 				'prune_time' => $pruneDate,
 			)
 		);
-
-		// Remove the files
-		foreach ($files as $file)
+		$files = array();
+		// Remove the files from the cache directory
+		while ($row = $db->fetch_assoc($request))
 		{
-			@unlink(CACHEDIR . '/img_cache_' . $file . '.elk');
+			$files[] = $row['filename'];
+			@unlink(CACHEDIR . '/img_cache_' . $row['filename'] . '.elk');
 		}
 
 		// Remove the db entry's
 		if (!empty($files))
 		{
 			$db->query('', '
-			DELETE FROM {db_prefix}image_cache
-			WHERE filename IN ({array_string:files})',
+				DELETE FROM {db_prefix}image_cache
+				WHERE filename IN ({array_string:files})',
 				array(
 					'files' => $files,
 				)
